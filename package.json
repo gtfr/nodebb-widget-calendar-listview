@@ -1,0 +1,37 @@
+{
+  "name": "nodebb-widget-calendar-listview",
+  "version": "0.1.0",
+  "description": "Adds a widget to show Listview for Calendar Plugin",
+  "main": "library.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gtfr/nodebb-widget-calendar-listview.git"
+  },
+  "keywords": [
+    "nodebb",
+    "widget",
+    "calendar"
+  ],
+  "author": "gtfr",
+  "contributors": [
+    {
+      "name": "Frank",
+      "email": "gtfr@posteo.de"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gtfr/nodebb-widget-calendar-listview/issues"
+  },
+  "homepage": "https://github.com/gtfr/nodebb-widget-calendar-listview",
+  "nbbpm": {
+    "compatibility": "^1.5.1"
+  },
+  "dependencies": {
+    "async": ">=2.4.1",
+    "templates.js": ">=0.3.11"
+  }
+}

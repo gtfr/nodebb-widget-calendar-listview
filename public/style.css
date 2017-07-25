@@ -1,0 +1,40 @@
+.calendar-listview-table {
+    font-size: 1em;
+    text-align: left;
+    width: 100%;
+    /*
+    border: 1px solid rgb(221, 221, 221);
+    border-collapse: collapse;
+    */
+}
+
+.calendar-listview-table td {
+    padding-top: 2px;
+    padding-right: 8px;
+    padding-bottom: 2px;
+    padding-left: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.calendar-listview-heading {
+    font-size: 1em;
+    text-align: left;
+    background-color: rgb(221, 221, 221);
+    /*
+    border-top-color: rgb(221, 221, 221);
+    border-right-color: rgb(221, 221, 221);
+    border-bottom-color: rgb(221, 221, 221);
+    border-left-color: rgb(221, 221, 221);
+    */
+}
+
+.calendar-listview-row {
+    font-size: 1em;
+    text-align: left;
+    /*
+    border-top-color: rgb(221, 221, 221);
+    border-right-color: rgb(221, 221, 221);
+    border-bottom-color: rgb(221, 221, 221);
+    border-left-color: rgb(221, 221, 221);
+    */
+}

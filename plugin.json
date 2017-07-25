@@ -1,0 +1,16 @@
+{
+    "id": "nodebb-widget-calendar-listview",
+    "name": "NodeBB Listview Widget for Calendar Plugin",
+    "description": "Adds a widget to show Listview for Calendar Plugin",
+    "url": "https://github.com/gtfr/nodebb-widget-calendar-listview.git",
+    "library": "library.js",
+    "hooks": [
+        { "hook": "static:app.load", "method": "init" },
+        { "hook": "filter:widgets.getWidgets", "method": "defineWidget" },
+        { "hook": "filter:widget.render:calendar-listview", "method": "renderListviewWidget" }
+    ],
+    "css": [
+    	"public/style.css"
+    ],
+    "templates": "public/templates"
+}
