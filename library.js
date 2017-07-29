@@ -1,6 +1,9 @@
 (function(module) {
     "use strict";
 
+    const meta = require.main.require('./src/meta');
+    const user = require.main.require('./src/user');
+
     var async = require('async'),
         fs = require('fs'),
         path = require('path'),
@@ -22,7 +25,8 @@
 
         var templatesToLoad = [
             "settings.tpl",
-            "widget.tpl"
+            "widget.tpl",
+            "widget_noresponses.tpl"
         ];
 
         function loadTemplate(template, next) {
@@ -37,24 +41,38 @@
         }
 
         async.each(templatesToLoad, loadTemplate);
+        console.log('[listview-widget] locale: %s', moment.locale());
 
         callback();
     };
 
     Widget.renderListviewWidget = function(widget, callback) {
         console.log('[listview-widget] renderListviewWidget called');
-        var start = moment().startOf(widget.data.period).valueOf(),
-            end = moment().endOf(widget.data.period).valueOf();
 
-        console.log('[listview-widget] from: %s, to: %s', start, end);
+        var start = moment().valueOf(),
+            end = moment().valueOf(),
+            lang = 'en-GB';
 
         async.waterfall([
+                function (next) {
+        			user.getSettings(widget.uid, next);
+        		},
+        		function (settings, next) {
+        			lang = settings.userLang || meta.config.defaultLang || lang;
+                    moment.locale(lang);
+                    console.log('[listview-widget] user %s, locale: %s', widget.uid, lang);
+                    next();
+        		},
                 function(next) {
+                    start = moment().startOf(widget.data.period).valueOf();
+                    end = moment().endOf(widget.data.period).valueOf();
+                    console.log('[listview-widget] from: %s, to: %s', start, end);
                     calendarev.getEventsByDate(start, end).then(function(events) {
                         next(null, events);
                     });
                 },
                 function(events, next) {
+                    // console.log('[listview-widget] Data: ' + JSON.stringify(events, null, 2));
                     calendarpriv.filterByPid(events, widget.uid).then(function(filtered) {
                         next(null, filtered);
                     });
@@ -67,7 +85,6 @@
                         event.day = (new Date(event.startDate)).toISOString().split('T')[0];
                         return [...prev, event];
                     }, []);
-                    // console.log('[listview-widget] All Occurences: %s, Day: %s', element.name, element.day);
                     // console.log('[listview-widget] Data: ' + JSON.stringify(occurences, null, 2));
                     next(null, occurences);
                 },
@@ -89,7 +106,8 @@
                                 name: element.name,
                                 allday: element.allday,
                                 day: element.day,
-                                daystr: (new moment(element.day)).format("dddd, LL"),
+                                daystr: (new moment(element.day)).format("LL"),
+                                weekday: (new moment(element.day)).format("dddd"),
                                 time: (new moment(element.startDate)).format("LT"),
                                 endtime: (new moment(element.endDate)).format("LT"),
                                 pid: element.pid,
@@ -131,6 +149,7 @@
                             result.days.push({
                                 day: element.day,
                                 daystr: element.daystr,
+                                weekday: element.weekday,
                                 events: [element]
                             });
                         } else {
@@ -145,9 +164,12 @@
                     console.log('[listview-widget] Error: See widget content');
                     widget.html = '<h4>An Error occurred:<h4><pre>' + JSON.stringify(err, null, 2) + '</pre>';
                 } else {
-                    //console.log('[listview-widget] Data:' + JSON.stringify(result, null, 2));
-                    widget.html = templates.parse(Widget.templates['widget.tpl'], result);
-                    //widget.html = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+                    // console.log('[listview-widget] Data:' + JSON.stringify(result, null, 2));
+                    if (widget.data.showresponse) {
+                        widget.html = templates.parse(Widget.templates['widget.tpl'], result);
+                    } else {
+                        widget.html = templates.parse(Widget.templates['widget_noresponses.tpl'], result);
+                    }
                 }
                 callback(null, widget);
             });
