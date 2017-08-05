@@ -1,8 +1,5 @@
+<div id="calendar-listview">
 <table class="calendar-listview-table">
-    <colgroup>
-        <col width=150px>
-        <col width=20px>
-     </colgroup>
     <!-- BEGIN days -->
     <tr class="calendar-listview-heading">
         <td colspan="1" style="text-align:left">{days.weekday}</td>
@@ -22,3 +19,4 @@
     <!-- END days.events -->
     <!-- END days -->
 </table>
+</div>
