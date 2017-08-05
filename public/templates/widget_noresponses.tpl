@@ -1,5 +1,10 @@
 <div id="calendar-listview">
 <table class="calendar-listview-table">
+    <colgroup>
+        <col class="col-md-2">
+        <col class="col-md-1">
+        <col class="col-md-9">
+    </colgroup>
     <!-- BEGIN days -->
     <tr class="calendar-listview-heading">
         <td colspan="1" style="text-align:left">{days.weekday}</td>
